@@ -1,20 +1,40 @@
-{{ define "main" }}
-<div class="pl-sm-4 ml-sm-5">
-    <h4>{{ if eq .Name "Categories" }} Categories {{ else }} Category - {{ .Name }} {{ end }}</h4>
-    {{ $outerName := .Name }}
-    <ul class="list-unstyled">
-        {{ range .Pages }}
-        <li>
-            {{ if ne $outerName "Categories" }}
-                <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" | safeHTML }}">
-                {{ .Date.Format "Jan 2 2006" }}
-                </time>
+<div class="pl-sm-4 ml-sm-5 pt-2">
+    <div class="row">
+        <div class="col-12">
+            {{ range $key, $taxonomy := .Site.Taxonomies.categories.Alphabetical }}
+            <div class="pb-3">
+                <h5>
+                    <span class="badge category">
+                        {{ .Name }}
+                    </span>
+                </h5>
+                <ul class="list-unstyled inline-list">
+                    {{ range $taxonomy.Pages }}
+                    <li>
+                        <a href="{{ .Permalink }}">{{ .Title }}</a>
+                        <i>{{ .Date.Format "Jan 2 2006" }}</i>
+                    </li>
+                    {{ end }}
+                </ul>
+            </div>
             {{ end }}
-            <a href="{{ .RelPermalink }}">
-                {{ .Title }}
-            </a>
-        </li>
-        {{ end }}
-    </ul>
+        </div>
+    </div>
 </div>
-{{ end }}
+
+<style>
+    .inline-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 0;
+        list-style: none;
+    }
+
+    .inline-list li i {
+        font-size: 0.8em;
+        color: #888888;
+        opacity: 0.7;
+        margin-left: 5px;
+    }
+</style>
